@@ -1,0 +1,16 @@
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.err_msg {
+    color:red;
+}
+
+.info_msg {
+    color:red;
+}
