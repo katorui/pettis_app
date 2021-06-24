@@ -92,7 +92,27 @@ Class Db
         $stmt = $dbh->prepare($sql);
         $stmt->bindValue(1, $id, PDO::PARAM_INT);
         $stmt->execute();
-        echo 'flag変更';
+        return 'flag変更';
+    }
+
+    public function getPage($offset_page,$item_length) {
+        $dbh = $this->dbConnect();
+        $ssql = "SELECT * FROM todo_item ORDER BY id LIMIT :start, " . $item_length;
+        $ssth = $dbh->prepare($ssql);
+        $ssth->bindValue(":start", $offset_page * $item_length, PDO::PARAM_INT);
+        $ssth->execute();
+        $data = $ssth->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    }
+
+// item総件数取得
+    public function itemCount() {
+        $dbh = $this->dbConnect();
+        $csql = "SELECT COUNT(*) FROM todo_item";
+        $ssth = $dbh->prepare($csql);
+        $ssth->execute();
+        $item_count = $ssth->fetchAll(PDO::FETCH_ASSOC);
+        return $item_count;
     }
 
 }
