@@ -5,19 +5,23 @@ session_start();
 // ファイル読み込み
 require_once('Database/db.php');
 // require_once('pagenation.php');
-$db = new Db();
-$getitems = $db->getItems((int)$_SESSION['id']);
-echo "<pre>";
-// var_dump($items);
-echo "</pre>";
-
+// $getItems = $db->getItems((int)$_SESSION['id']);
+if (isset($_SESSION['id'])) {
+    $user_id = ((int)$_SESSION['id']);
+}
+echo $_SESSION['id'];
+echo $user_id;
 // ページネーション
+$db = new Db();
 $page = (isset($_GET['page']) && 0 < $_GET['page']) ? $_GET['page'] : 1;
 $offset_page = 0 < $page ? $page - 1 : 0;
 $item_length = 3;
-$getPage = $db->getPage($offset_page,$item_length);
-$item_count = $db->itemCount();
+$getPage = $db->getPage($user_id,$offset_page,$item_length);
+$item_count = $db->itemCount($user_id);
 $total_pages = (int)ceil($item_count[0]["COUNT(*)"] / $item_length);
+echo "<pre>";
+// var_dump($getPage);
+echo "</pre>";
 
 ?>
 <!DOCTYPE html>
@@ -68,7 +72,7 @@ $total_pages = (int)ceil($item_count[0]["COUNT(*)"] / $item_length);
     </form>
     <h1>ITEMS</h1>
     <ul class="todo_items">
-        <?php foreach($getitems as $item): ?>
+        <?php foreach($getPage as $item): ?>
             <li>
                 <?php $css = $item['flag'] == 2 ? "line" : ""; ?>
                 <span class="<?= $css ?>"><?php echo $item['todo_item']; ?></span>

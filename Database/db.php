@@ -66,7 +66,26 @@ Class Db
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $rows;
     }
+// アイテム削除
+    public function deleteItems($id) {
+        $dbh = $this->dbConnect();
+        $sql = "DELETE FROM todo_item WHERE id = ?";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(1, $id, PDO::PARAM_INT);
+        $stmt->execute();
+        echo '削除成功';
+    }
+// 完了フラグ変更
+    public function doneItems($id) {
+        $dbh = $this->dbConnect();
+        $sql = "UPDATE todo_item SET flag = 2 WHERE id = ?";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(1, $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return 'flag変更';
+    }
 
+    // ユーザーidごとのアイテム取得
     public function getItems($id) {
         $dbh = $this->dbConnect();
         $sql = "SELECT * FROM todo_item WHERE user_id = :id";
@@ -77,39 +96,23 @@ Class Db
         return $rows;
     }
 
-    public function deleteItems($id) {
+    public function getPage($user_id,$offset_page,$item_length) {
         $dbh = $this->dbConnect();
-        $sql = "DELETE FROM todo_item WHERE id = ?";
-        $stmt = $dbh->prepare($sql);
-        $stmt->bindValue(1, $id, PDO::PARAM_INT);
-        $stmt->execute();
-        echo '削除成功';
-    }
-
-    public function doneItems($id) {
-        $dbh = $this->dbConnect();
-        $sql = "UPDATE todo_item SET flag = 2 WHERE id = ?";
-        $stmt = $dbh->prepare($sql);
-        $stmt->bindValue(1, $id, PDO::PARAM_INT);
-        $stmt->execute();
-        return 'flag変更';
-    }
-
-    public function getPage($offset_page,$item_length) {
-        $dbh = $this->dbConnect();
-        $ssql = "SELECT * FROM todo_item ORDER BY id LIMIT :start, " . $item_length;
+        $ssql = "SELECT * FROM todo_item WHERE user_id = :user_id ORDER BY id LIMIT :start, " . $item_length;
         $ssth = $dbh->prepare($ssql);
+        $ssth->bindValue(":user_id", $user_id, PDO::PARAM_INT);
         $ssth->bindValue(":start", $offset_page * $item_length, PDO::PARAM_INT);
         $ssth->execute();
         $data = $ssth->fetchAll(PDO::FETCH_ASSOC);
         return $data;
     }
 
-// item総件数取得
-    public function itemCount() {
+// ログインユーザーごとitem総件数取得
+    public function itemCount($user_id) {
         $dbh = $this->dbConnect();
-        $csql = "SELECT COUNT(*) FROM todo_item";
+        $csql = "SELECT COUNT(*) FROM todo_item WHERE user_id = :user_id";
         $ssth = $dbh->prepare($csql);
+        $ssth->bindValue(":user_id", $user_id, PDO::PARAM_INT);
         $ssth->execute();
         $item_count = $ssth->fetchAll(PDO::FETCH_ASSOC);
         return $item_count;
