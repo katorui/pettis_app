@@ -1,0 +1,8 @@
+
+.side_wrap {
+    background-color: #fff;
+    height: 100%;
+    position: fixed;
+    padding-right: 2rem;
+    /* z-index: 30; */
+}

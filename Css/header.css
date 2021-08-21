@@ -1,0 +1,9 @@
+
+
+.header_wrap {
+    height: 10%;
+    /* background-color: blue; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

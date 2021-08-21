@@ -4,7 +4,7 @@ ini_set('display_errors', "On");
 // セッション開始
 session_start();
 // ページ読み込み
-require_once('../../validation.php');
+require_once('../../Moduls/validation.php');
 require_once('../../Database/db.php');
 
 if (isset($_POST['email'])) {
@@ -13,7 +13,14 @@ if (isset($_POST['email'])) {
 if (isset($_POST['password'])) {
     $password = $_POST['password'];
 };
-
+if (isset($_POST['csrf_token'])) {
+    $token =  $_POST['csrf_token'];
+};
+// ワンタイムトークン
+if (!isset($_SESSION['csrf_token']) || $token !== $_SESSION['csrf_token']) {
+    exit('不正なリクエストです');
+}
+unset($_SESSION['csrf_token']);
 
 // バリデーション
 email_check($email);

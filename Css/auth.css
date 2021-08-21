@@ -1,4 +1,7 @@
 
+body {
+    background-image: url(../img/yellowtop.jpg);
+}
 
 .container {
     display: flex;
@@ -13,4 +16,8 @@
 
 .info_msg {
     color:red;
+}
+
+.button {
+    text-align: center;
 }

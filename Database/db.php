@@ -117,5 +117,14 @@ Class Db
         $item_count = $ssth->fetchAll(PDO::FETCH_ASSOC);
         return $item_count;
     }
-
+// item詳細取得
+    public function item_detail($id) {
+        $dbh = $this->dbConnect();
+        $sql = "SELECT * FROM todo_item WHERE id = :id";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $rows;
+    }
 }

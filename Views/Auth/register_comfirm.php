@@ -1,8 +1,8 @@
 <?php
 ini_set('display_errors', "On");
 session_start();
-require_once('../../validation.php');
-require_once('../../function.php');
+require_once( dirname(__DIR__) . '/../Moduls/validation.php');
+require_once( dirname(__DIR__) . '/../function.php');
 // $name = $_POST['name'];
 $name = isset($_POST["name"]) ? shape($_POST["name"]) : "";
 $mail = $_POST['mail'];
@@ -21,24 +21,25 @@ if (isset($_SESSION['err']['register_name']) || isset($_SESSION['err']['email'])
 }
 
 ?>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 <link rel="stylesheet" href="../../Css/auth.css">
 <div class="container">
     <h1 class='title'>
-        登録内容確認
+        <!-- REGISTERCOMFIRM -->
     </h1>
     <form action="register_complete.php" method="post">
         <div class="item">
-            <label>ユーザー名：<?php echo $name; ?><label>
-            <input type="hidden" name="name" value="<?php echo $name; ?>">
+            <label >USERNAME：<?php echo $name; ?><label>
+            <input type="hidden"  name="name" value="<?php echo $name; ?>">
         </div>
 
         <div class="item">
-            <label>メールアドレス：<?php echo $mail; ?><label>
+            <label>EMAIL：<?php echo $mail; ?><label>
             <input type="hidden" name="mail" value="<?php echo $mail; ?>">
         </div>
 
         <div class="item">
-            <label>パスワード：<?php echo $password; ?><label>
+            <label>PASSWORD：<?php echo $password; ?><label>
             <input type="hidden" name="password" value="<?php echo $password; ?>">
         </div>
 
@@ -47,8 +48,8 @@ if (isset($_SESSION['err']['register_name']) || isset($_SESSION['err']['email'])
         </div>
 
         <p>こちらの内容で登録しますか？</p>
-        <div class="item">
-            <input type="submit" value="登録する">
+        <div class="button">
+            <input class="btn btn-primary" type="submit" value="REGISTER">
         </div>
 
     </form>
